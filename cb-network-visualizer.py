@@ -6,13 +6,19 @@ import matplotlib.pyplot as plt
 import csv
 
 #####
-raw_data = pd.read_csv('output-performance-evaluation-20220531210546.csv')
+raw_data = pd.read_csv('output-performance-evaluation-20220603172833.csv')
 
 print(raw_data)
 
 #####
-udf=pd.DataFrame(raw_data)
-sdf=udf.sort_values(by=['Trial no.','Test case', 'Source IP', 'Destination IP'])
+udf = pd.DataFrame(raw_data)
+
+##### To sort IP address
+udf = udf.assign(x=udf['Source IP'].replace(['/.*',r'\b(\d{1})\b',r'\b(\d{2})\b'], ['',r'00\1',r'0\1'], regex=True))
+udf = udf.assign(y=udf['Destination IP'].replace(['/.*',r'\b(\d{1})\b',r'\b(\d{2})\b'], ['',r'00\1',r'0\1'], regex=True))
+
+# sdf = udf.sort_values(by=['Trial no.','Test case', 'x', 'y'])
+sdf = udf.sort_values(by=['Trial no.','Test case', 'x', 'y'])
 
 print("sdf: ")
 print(sdf)
@@ -53,106 +59,110 @@ print(len(rtt_data_2d))
 
 
 
-# figsize_x = 12
-# figsize_y = 8
-# v_max = 500
-# v_min = 0
-# ##### Display the test case 1 - Internet communication + No encryption
-# start_index = 0
-# print(start_index)
-# df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
-# df.index = target_peers
+figsize_x = 12
+figsize_y = 8
+v_max = 500
+v_min = 0
+##### Display the test case 1 - Internet communication + No encryption
+start_index = 0
+print(start_index)
+df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
+df.index = target_peers
 
-# plt.figure(figsize=(figsize_x, figsize_y))
+plt.figure(figsize=(figsize_x, figsize_y))
 
-# ax = sns.heatmap(df, 
-#     cbar=True,
-#     cmap="YlOrRd", 
-#     annot=True, 
-#     fmt=".2f", 
-#     vmin=v_min, 
-#     vmax=v_max, 
-#     linewidths=1,
-#     square=True)
+ax = sns.heatmap(df, 
+    cbar=True,
+    cmap="YlOrRd", 
+    annot=True, 
+    fmt=".2f", 
+    vmin=v_min, 
+    vmax=v_max, 
+    linewidths=1,
+    square=True)
 
-# title = "Round Trip Time (ms) - Internet communication, no encryption"
-# plt.title(title)
-# plt.draw()
-# plt.pause(0.001)
+title = "Round Trip Time (ms) - Internet communication, no encryption"
+plt.title(title)
+plt.draw()
+plt.pause(0.001)
 
-# ##### Display the test case 2 - Internet communication + Encryption
-# start_index = start_index + peer_len
+##### Display the test case 2 - Internet communication + Encryption
+start_index = start_index + peer_len
 
-# print(start_index)
-# df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
-# df.index = target_peers
+print(start_index)
+df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
+df.index = target_peers
 
-# plt.figure(figsize=(figsize_x, figsize_y))
+plt.figure(figsize=(figsize_x, figsize_y))
 
-# ax = sns.heatmap(df, 
-#     cbar=True,
-#     cmap="YlOrRd", 
-#     annot=True, 
-#     fmt=".2f", 
-#     vmin=v_min, 
-#     vmax=v_max,
-#     linewidths=1,
-#     square=True)
+ax = sns.heatmap(df, 
+    cbar=True,
+    cmap="YlOrRd", 
+    annot=True, 
+    fmt=".2f", 
+    vmin=v_min, 
+    vmax=v_max,
+    linewidths=1,
+    square=True)
 
-# title = "Round Trip Time (ms) - Internet communication, encryption"
-# plt.title(title)
-# plt.draw()
-# plt.pause(0.001)
+title = "Round Trip Time (ms) - Internet communication, encryption"
+plt.title(title)
+plt.draw()
+plt.pause(0.001)
 
-# ##### Display the test case 3 - Cost-prioritized communication + No encryption
-# start_index = start_index + peer_len
+##### Display the test case 3 - Cost-prioritized communication + No encryption
+start_index = start_index + peer_len
 
-# print(start_index)
-# df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
-# df.index = target_peers
+print(start_index)
+df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
+df.index = target_peers
 
-# plt.figure(figsize=(figsize_x, figsize_y))
+plt.figure(figsize=(figsize_x, figsize_y))
 
-# ax = sns.heatmap(df, 
-#     cbar=True,
-#     cmap="YlOrRd", 
-#     annot=True, 
-#     fmt=".2f", 
-#     vmin=v_min, 
-#     vmax=v_max,
-#     linewidths=1,
-#     square=True)
+ax = sns.heatmap(df, 
+    cbar=True,
+    cmap="YlOrRd", 
+    annot=True, 
+    fmt=".2f", 
+    vmin=v_min, 
+    vmax=v_max,
+    linewidths=1,
+    square=True)
 
-# title = "Round Trip Time (ms) - Cost-prioritized communication, no encryption"
-# plt.title(title)
-# plt.draw()
-# plt.pause(0.001)
+title = "Round Trip Time (ms) - Cost-prioritized communication, no encryption"
+plt.title(title)
+plt.draw()
+plt.pause(0.001)
 
-# ##### Display the test case 4 - Cost-prioritized communication + Encryption
-# start_index = start_index + peer_len
+##### Display the test case 4 - Cost-prioritized communication + Encryption
+start_index = start_index + peer_len
 
-# print(start_index)
-# df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
-# df.index = target_peers
+print(start_index)
+df = pd.DataFrame(rtt_data_2d[start_index:start_index+peer_len], columns=target_peers)
+df.index = target_peers
 
-# plt.figure(figsize=(figsize_x, figsize_y))
+plt.figure(figsize=(figsize_x, figsize_y))
 
-# ax = sns.heatmap(df, 
-#     cbar=True,
-#     cmap="YlOrRd", 
-#     annot=True, 
-#     fmt=".2f", 
-#     vmin=v_min, 
-#     vmax=v_max,
-#     linewidths=1,
-#     square=True)
+ax = sns.heatmap(df, 
+    cbar=True,
+    cmap="YlOrRd", 
+    annot=True, 
+    fmt=".2f", 
+    vmin=v_min, 
+    vmax=v_max,
+    linewidths=1,
+    square=True)
 
-# title = "Round Trip Time (ms) - Cost-prioritized communication, encryption"
-# plt.title(title)
-# plt.draw()
-# plt.pause(0.001)
+title = "Round Trip Time (ms) - Cost-prioritized communication, encryption"
+plt.title(title)
+plt.draw()
+plt.pause(0.001)
 
-# input("Press [enter] to quit.")
+input("Press [enter] to go to the next.")
+
+###################################################################################################
+###################################################################################################
+###################################################################################################
 
 def get_label_rotation(angle, offset):
     # Rotation must be specified in degrees :(
@@ -187,9 +197,10 @@ def add_labels(angles, values, labels, offset, ax):
             rotation_mode="anchor"
         ) 
 
+start_index = 0
 # Get columns which are destination peers
 df2 = sdf[['Source IP', 'Destination IP', 'Average RTT (ms)']]
-df2 = df2[:peer_len*peer_len]
+df2 = df2[start_index:start_index+peer_len*peer_len]
 df2 = df2.reset_index(drop=True)
 
 # df2 = df2.sort_values(by=['Source name', 'Average RTT (ms)'])
@@ -241,19 +252,106 @@ ax.set_xticks([])
 # ax.set_yticklabels([])
 ax.set_yticks([0, 10, 50, 100, 200, 500])
 
-# # Constants = parameters controling the plot layout:
-# upperLimit = 100
-# lowerLimit = 30
-# labelPadding = 4
+# Use different colors for each group!
+GROUPS_SIZE = [peer_len] * peer_len
+COLORS = [f"C{i}" for i, size in enumerate(GROUPS_SIZE) for _ in range(size)]
 
-# # Compute max and min in the dataset
-# max = df2['Average RTT (ms)'].max()
+# And finally add the bars. 
+# Note again the `ANGLES[IDXS]` to drop some angles that leave the space between bars.
+ax.bar(
+    ANGLES[IDXS], VALUES, width=WIDTH, color=COLORS, 
+    edgecolor="white", linewidth=2
+)
 
-# # Let's compute heights: they are a conversion of each item value in those new coordinates
-# # In our example, 0 in the dataset will be converted to the lowerLimit (10)
-# # The maximum will be converted to the upperLimit (100)
-# slope = (max - lowerLimit) / max
-# HEIGHT = slope * df2['Average RTT (ms)'] + lowerLimit
+add_labels(ANGLES[IDXS], VALUES, LABELS, OFFSET, ax)
+
+# Extra customization below here --------------------
+
+# This iterates over the sizes of the groups adding reference
+# lines and annotations.
+
+offset = 0 
+for group, size in zip(target_peers, GROUPS_SIZE):
+    # Add line below bars
+    x1 = np.linspace(ANGLES[offset + PAD], ANGLES[offset + size + PAD - 1], num=50)
+    ax.plot(x1, [-5] * 50, color="#333333")
+    
+    # Add text to indicate group
+    ax.text(
+        np.mean(x1), -200, group, color="#333333", fontsize=14, 
+        fontweight="bold", ha="center", va="center"
+    )
+    
+    # # Add reference lines at 20, 40, 60, and 80
+    # x2 = np.linspace(ANGLES[offset], ANGLES[offset + PAD - 1], num=50)
+    # ax.plot(x2, [20] * 50, color="#bebebe", lw=0.8)
+    # ax.plot(x2, [40] * 50, color="#bebebe", lw=0.8)
+    # ax.plot(x2, [60] * 50, color="#bebebe", lw=0.8)
+    # ax.plot(x2, [80] * 50, color="#bebebe", lw=0.8)
+    
+    offset += size + PAD
+
+title = "Round Trip Time (ms) - Internet communication, no encryption"
+plt.title(title)
+plt.draw()
+plt.pause(0.001)
+
+
+
+start_index = start_index+peer_len*peer_len
+# Get columns which are destination peers
+df2 = sdf[['Source IP', 'Destination IP', 'Average RTT (ms)']]
+df2 = df2[start_index:start_index+peer_len*peer_len]
+df2 = df2.reset_index(drop=True)
+
+# df2 = df2.sort_values(by=['Source name', 'Average RTT (ms)'])
+
+print(df2)
+
+# All this part is like the code above
+ANGLES = np.linspace(0, 2 * np.pi, len(df2), endpoint=False)
+VALUES = df2['Average RTT (ms)'].values
+LABELS = df2['Destination IP'].values
+GROUP = df2['Source IP'].values
+
+# Determines where to place the first bar. 
+# By default, matplotlib starts at 0 (the first bar is horizontal)
+# but here we say we want to start at pi/2 (90 deg)
+OFFSET = np.pi / 2
+
+# Add three empty bars to the end of each group
+PAD = 3
+ANGLES_N = len(VALUES) + PAD * len(np.unique(GROUP))
+ANGLES = np.linspace(0, 2 * np.pi, num=ANGLES_N, endpoint=False)
+WIDTH = (2 * np.pi) / len(ANGLES)
+
+# Obtaining the right indexes is now a little more complicated
+offset = 0
+IDXS = []
+GROUPS_SIZE = [peer_len] * peer_len
+print(GROUPS_SIZE)
+
+for size in GROUPS_SIZE:
+    IDXS += list(range(offset + PAD, offset + size + PAD))
+    offset += size + PAD
+
+# # The index contains non-empty bards
+# IDXS = slice(0, ANGLES_N - PAD)
+
+print(IDXS)
+print(offset)
+
+# Same layout as above
+fig, ax = plt.subplots(figsize=(12, 12), subplot_kw={"projection": "polar"})
+
+ax.set_theta_offset(OFFSET)
+ax.set_ylim(-700, 700)
+ax.set_frame_on(False)
+ax.xaxis.grid(False)
+ax.yaxis.grid(True)
+ax.set_xticks([])
+# ax.set_yticklabels([])
+ax.set_yticks([0, 10, 50, 100, 200, 500])
 
 # Use different colors for each group!
 GROUPS_SIZE = [peer_len] * peer_len
@@ -294,4 +392,9 @@ for group, size in zip(target_peers, GROUPS_SIZE):
     
     offset += size + PAD
 
-plt.show()
+title = "Round Trip Time (ms) - Internet communication, encryption"
+plt.title(title)
+plt.draw()
+plt.pause(0.001)
+
+input("Press [enter] to quit.")
